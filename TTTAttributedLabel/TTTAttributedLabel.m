@@ -572,6 +572,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
         }
 
         self.attributedText = mutableAttributedString;
+        self.storedAttributedText = mutableAttributedString;
         [self setNeedsDisplay];
     }
     [mutableLinks addObjectsFromArray:results];
@@ -1041,6 +1042,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     }
 
     self.attributedText = text;
+    self.storedAttributedText = text;
     self.activeLink = nil;
 
     self.links = [NSArray array];
@@ -1113,11 +1115,13 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
         }
 
         self.attributedText = mutableAttributedString;
+        self.storedAttributedText = mutableAttributedString;
         [self setNeedsDisplay];
 
         [CATransaction flush];
     } else if (self.inactiveAttributedText) {
         self.attributedText = self.inactiveAttributedText;
+        self.storedAttributedText = self.inactiveAttributedText;
         self.inactiveAttributedText = nil;
 
         [self setNeedsDisplay];
@@ -1218,6 +1222,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
             }
 
             self.attributedText = NSAttributedStringByScalingFontSize(self.attributedText, scaleFactor);
+            self.storedAttributedText = NSAttributedStringByScalingFontSize(self.attributedText, scaleFactor);
         }
     }
 
@@ -1388,6 +1393,7 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
     }
 
     self.attributedText = mutableAttributedString;
+    self.storedAttributedText = mutableAttributedString;
 
     [self setNeedsDisplay];
 }
@@ -1622,6 +1628,12 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
 
     if ([coder containsValueForKey:NSStringFromSelector(@selector(attributedText))]) {
         self.attributedText = [coder decodeObjectForKey:NSStringFromSelector(@selector(attributedText))];
+    } else {
+        self.text = super.text;
+    }
+    
+    if ([coder containsValueForKey:NSStringFromSelector(@selector(storedAttributedText))]) {
+        self.storedAttributedText = [coder decodeObjectForKey:NSStringFromSelector(@selector(storedAttributedText))];
     } else {
         self.text = super.text;
     }

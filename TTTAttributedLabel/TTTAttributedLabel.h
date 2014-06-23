@@ -289,6 +289,10 @@ afterInheritingLabelAttributesAndConfiguringWithBlock:(NSMutableAttributedString
  */
 @property (readwrite, nonatomic, copy) NSAttributedString *attributedText;
 
+//R&P Addition
+//In the case where we need to support further back that iOS6, we need a way of getting the attributedText. So keep a copy of it accessable here
+@property (strong, nonatomic) NSAttributedString *storedAttributedText;
+
 ///-------------------
 /// @name Adding Links
 ///-------------------
